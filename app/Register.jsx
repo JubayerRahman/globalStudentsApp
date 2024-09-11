@@ -13,10 +13,13 @@ const Register = () => {
   const {applicationId, setApplicationId} = useContext(AllData)
 
   useEffect(()=>{
-    Axios("/students")
+    Axios("/registrations")
     .then(data=> setData(data.data))
     setLoading(false)
   },[])
+
+  console.log(data);
+  
 
   const EditPageFunction = (id)=>{
     setApplicationId(id)
@@ -34,15 +37,15 @@ const Register = () => {
   
   return (
       <FlatList
-      style={styles.mani}
+      style={styles.main}
       data={data}
       keyExtractor={(item)=>item._id}
       renderItem={({item})=>(
         <View style={styles.listItme}>
           <Text style={styles.Smalltext}>Applied ID: {item._id}</Text>
-          <Text style={styles.text}>{item.firstname +" "+ item.lastname}</Text>
-          <Text style={styles.text}>Counsellor: {item.counsellor === ""? "Not assigned": item.counsellor}</Text>
-          <Text style={styles.Smalltext}>Date Added: {item.date},{item.currentime}</Text>
+          <Text style={styles.text}>{item.formData.firstName +" "+ item.formData.lastName}</Text>
+          <Text style={styles.text}>Counsellor: {item.cpName === ""? "Not assigned": item.cpName}</Text>
+          <Text style={styles.Smalltext}>Date Added: {item.time}</Text>
           <TouchableOpacity onPress={()=>EditPageFunction(item._id)}  style={styles.editButton}>
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
@@ -53,9 +56,9 @@ const Register = () => {
 }
 
 const styles = StyleSheet.create({
-  mani:{
+  main:{
     marginTop:40,
-    // marginBottom:5
+    marginBottom:5
   },
   listItme:{
     marginTop:10,
@@ -71,14 +74,16 @@ const styles = StyleSheet.create({
     gap:10
   },
   text:{
-    fontSize:20,
-    fontWeight:"bold",
-    color:"gray"
+    fontSize:25,
+    // fontWeight:"bold",
+    color:"gray",
+    // fontFamily:"boldFont"
   },
   Smalltext:{
     fontSize:16,
-    fontWeight:"bold",
-    color:"gray"
+    // fontWeight:"bold",
+    color:"gray",
+    // fontFamily:"boldFont"
   },
   editButton:{
     backgroundColor:"#828CFF",
@@ -88,8 +93,9 @@ const styles = StyleSheet.create({
   buttonText:{
     color:"white",
     textAlign:"center",
-    fontSize:18,
-    fontWeight:"bold"
+    fontSize:30,
+    fontFamily:"boldFont"
+    // fontWeight:"bold"
   }
 })
 

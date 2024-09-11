@@ -18,18 +18,36 @@ const StudentForm = () => {
 
   const time = new Date()
 
-  const day = time.getDate()
-  const month = time.getMonth()+1 
-  const year = time.getFullYear()
-  const currentime = time.toLocaleTimeString("en-BD",{
-    hour:"numeric",
-    minute:"2-digit",
-    second:"2-digit",
-    hour12: true,
-    timeZone:"Asia/Dhaka"
-  })
+  // const day = time.getDate()
+  // const month = time.getMonth()+1 
+  // const year = time.getFullYear()
+  // const currentime = time.toLocaleTimeString("en-BD",{
+  //   hour:"numeric",
+  //   minute:"2-digit",
+  //   second:"2-digit",
+  //   hour12: true,
+  //   timeZone:"Asia/Dhaka"
+  // })
 
-  const date = day+"/"+month+"/"+year
+  // const date = day+"/"+month+"/"+year
+
+    const now = new Date();
+
+    // Extract date components
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = now.getFullYear();
+
+    // Extract time components
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    // Format date and time
+    const formattedDate = `${day}-${month}-${year}, ${hours}:${minutes}`;
+
+    console.log(formattedDate);
+    
+
 
   // modal state
   const [modalView, setModalView] = useState(false)
@@ -39,11 +57,19 @@ const StudentForm = () => {
       setModalView(true)
     }
     else{
-      const studentData= {firstname, lastname, number, email, qualification,counsellor, selectedCountry, course,date, university, currentime}
+      const studentData= {
+        firstName:firstname, 
+        lastName:lastname, 
+        mobileNo:number, 
+        email:email, 
+        academic:qualification, 
+        country:selectedCountry, 
+        course:course, 
+        university:university}
       console.log(studentData);
       
 
-      Axios.post("/students",studentData)
+      Axios.post("/registrations",{formData: studentData,cpMail:counsellor, cpName:"" , time:formattedDate})
       .then(data=>{
         if (data) {
           Alert.alert("Students data has been stored")
@@ -55,6 +81,9 @@ const StudentForm = () => {
           setselectedCountry("")
           setCourse("")
           setUniversity("")
+          const mailBody = {name: firstname + " " +lastname, to: email, mail :`Thank you for submitting a form \n Our counsellor will contact you soon. ` , subject:'Thank you for submitting a form.' }
+            Axios.post('/sendMail', mailBody)
+            .then(res=> console.log(res.status))
         }
         else{
           Alert.alert("we are facing some issues, please try again later")
@@ -110,9 +139,8 @@ const StudentForm = () => {
                   <Picker.Item style={styles.input} label='United Kingdom' value='United Kingdom'/>
                   <Picker.Item style={styles.input} label='Canada' value='Canada'/>
                   <Picker.Item style={styles.input} label='Australia' value='Australia'/>
+                  <Picker.Item style={styles.input} label='New Zealand' value='New Zealand'/>
                   <Picker.Item style={styles.input} label='Germany' value='Germany'/>
-                  <Picker.Item style={styles.input} label='Switzerland' value='Switzerland'/>
-                  <Picker.Item style={styles.input} label='Singapore' value='Singapore'/>
                 </Picker>
               </View> 
             </View>
@@ -174,8 +202,9 @@ const styles = StyleSheet.create ({
       marginTop:"10%"
   },
   title:{
-      fontWeight: "700",
+      fontWeight: "500",
       fontSize: 25,
+      // fontFamily:"boldFont"
   },
   image: {
       width: 50,
@@ -186,7 +215,8 @@ const styles = StyleSheet.create ({
       fontSize: 14,
       textAlign:"center",
       color:"gray",
-      marginBottom: 40
+      marginBottom: 40,
+      fontFamily:"boldFont"
     },
   button:{
       backgroundColor:"#2563EB",
@@ -208,13 +238,16 @@ const styles = StyleSheet.create ({
       fontWeight:"600",
       textAlign:"center",
       color:"white",
+      padding: 10,
+      fontFamily:"boldFont"
   },
   text:{
-      fontSize: 16,
+      fontSize: 20,
       marginTop:15,
       marginBottom: 10,
       marginLeft:10,
       fontWeight: "600",
+      fontFamily:"boldFont"
       // textAlign:"center"
   },
   cradit: {
@@ -228,13 +261,15 @@ const styles = StyleSheet.create ({
     width:"100%",
     marginLeft:"auto",
     marginRight:"auto",
-    marginTop:10
+    marginTop:10,
   },
   input:{
     borderWidth: 1,
     borderColor:"gray",
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    // fontFamily:"boldFont",
+    fontSize: 20
   },
   modalView:{
     backgroundColor:"white",
@@ -253,7 +288,8 @@ const styles = StyleSheet.create ({
     color:"red",
     fontSize:30,
     width:"full",
-    textAlign: "right"
+    textAlign: "right",
+    fontFamily:"boldFont"
   }
 })
 

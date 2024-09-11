@@ -21,25 +21,27 @@ const EditScreen = () => {
     const [studentsData, setStudentData]= useState("")
     const {applicationId, setApplicationId} = useContext(AllData)
 
-    const time = new Date()
 
-  const day = time.getDate()
-  const month = time.getMonth()+1 
-  const year = time.getFullYear()
-  const currentime = time.toLocaleTimeString("en-BD",{
-    hour:"numeric",
-    minute:"2-digit",
-    second:"2-digit",
-    hour12: true,
-    timeZone:"Asia/Dhaka"
-  })
+     const now = new Date();
 
-  const date = day+"/"+month+"/"+year
+      // Extract date components
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+      const year = now.getFullYear();
+  
+      // Extract time components
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+  
+      // Format date and time
+      const formattedDate = `${day}-${month}-${year}, ${hours}:${minutes}`;
+  
+      console.log(formattedDate);
     
     useEffect(()=>{
-        console.log(`/student/${applicationId}`)
+        console.log(`/registration/${applicationId}`)
         if (applicationId != "") {
-            Axios(`/students/${applicationId}`)
+            Axios(`/registration/${applicationId}`)
             
             .then(data=>setStudentData(data.data))
         }
@@ -49,14 +51,14 @@ const EditScreen = () => {
         console.log(studentsData);
         if (studentsData) {
             
-            setFirstName(studentsData[0].firstname)
-            setLastName(studentsData[0].lastname)
-            setNumber(studentsData[0].number)
-            setEmail(studentsData[0].email)
-            setQualification(studentsData[0].qualification)
-            setSelectedCountry(studentsData[0].selectedCountry)
-            setCourse(studentsData[0].course)
-            setUniversity(studentsData[0].university)
+            setFirstName(studentsData[0].formData.firstName)
+            setLastName(studentsData[0].formData.lastName)
+            setNumber(studentsData[0].formData.mobileNo)
+            setEmail(studentsData[0].formData.email)
+            setQualification(studentsData[0].formData.academic)
+            setSelectedCountry(studentsData[0].formData.country)
+            setCourse(studentsData[0].formData.course)
+            setUniversity(studentsData[0].formData.university)
         }
     },[studentsData])
 
@@ -71,19 +73,29 @@ const EditScreen = () => {
         else{
             const counsellorEmail = 
             (
-                counsellor === "Jobayer Rahman Ohee" ?"jubayerr398@gmai.com": 
-                counsellor === "Riyaz Ahmed" ?"riazAhmed@gmail.coom": 
-                counsellor === "Nahid Ahmed" ?"NahidAhmed@gmail.com":"" 
+                counsellor === "Nayeem Uddin" ?"nayeem@shabujglobal.in": 
+                counsellor === "Riyaz Ahmed" ?"skriyazahmed200@gmail.com": 
+                counsellor === "Nahid Ahmed" ?"nahidahmmed411@gmail.com":"" 
 
             )
-          const studentData= {firstname, lastname, number, email, qualification,counsellor, selectedCountry, course,date, university, currentime, counsellorEmail}
+            const studentData= {
+              firstName:firstname, 
+              lastName:lastname, 
+              mobileNo:number, 
+              email:email, 
+              academic:qualification, 
+              country:selectedCountry, 
+              course:course, 
+              university:university}
+            console.log(studentData);
           console.log(studentData);
           
     
-          Axios.put(`/updateStudents/${applicationId}`,studentData)
+          const updateRegistration = { formData: studentData, counsellorName: counsellor, counsellorMail: counsellorEmail };
+          Axios.patch(`/registrationPatchStatus/${applicationId}`,updateRegistration)
           .then(responce=>{
             if (responce) {
-              Alert.alert("Students data has been stored")
+              Alert.alert("A mail has been sent to counsellor")
               setFirstName("")
               setLastName("")
               setNumber("")
@@ -92,6 +104,14 @@ const EditScreen = () => {
               setSelectedCountry("")
               setCourse("")
               setUniversity("")
+
+              const mailBody = {
+                name: counsellor, to: counsellorEmail, mail: studentData,
+                subject: 'You have a new meeting with a student.'
+            }
+
+              Axios.post('/sendMails', mailBody)
+              .then(res => console.log(res))
             }
             else{
               Alert.alert("we are facing some issues, please try again later")
@@ -149,9 +169,8 @@ const EditScreen = () => {
                   <Picker.Item style={styles.input} label='United Kingdom' value='United Kingdom'/>
                   <Picker.Item style={styles.input} label='Canada' value='Canada'/>
                   <Picker.Item style={styles.input} label='Australia' value='Australia'/>
+                  <Picker.Item style={styles.input} label='New Zealand' value='New Zealand'/>
                   <Picker.Item style={styles.input} label='Germany' value='Germany'/>
-                  <Picker.Item style={styles.input} label='Switzerland' value='Switzerland'/>
-                  <Picker.Item style={styles.input} label='Singapore' value='Singapore'/>
                 </Picker>
               </View> 
             </View>
@@ -173,7 +192,7 @@ const EditScreen = () => {
                 selectedValue={counsellor}
                 onValueChange={(itemValue)=> setCounsellor(itemValue)}
                 >
-                  <Picker.Item style={styles.input} label='Jobayer Rahman Ohee' value='Jobayer Rahman Ohee'/>
+                  <Picker.Item style={styles.input} label='Nayeem Uddin' value='Nayeem Uddin'/>
                   <Picker.Item style={styles.input} label='Riyaz Ahmed' value='Riyaz Ahmed'/>
                   <Picker.Item style={styles.input} label='Nahid Ahmmed' value='Nahid Ahmmed'/>
                 </Picker>
@@ -228,8 +247,9 @@ const styles = StyleSheet.create ({
         marginTop:"10%"
     },
     title:{
-        fontWeight: "700",
+        fontWeight: "600",
         fontSize: 25,
+        // fontFamily:"boldFont"
     },
     image: {
         width: 50,
@@ -262,13 +282,16 @@ const styles = StyleSheet.create ({
         fontWeight:"600",
         textAlign:"center",
         color:"white",
+        padding: 10,
+        fontFamily:"boldFont"
     },
     text:{
-        fontSize: 16,
+        fontSize: 20,
         marginTop:15,
         marginBottom: 10,
         marginLeft:10,
         fontWeight: "600",
+        fontFamily:"boldFont"
         // textAlign:"center"
     },
     cradit: {
@@ -276,7 +299,8 @@ const styles = StyleSheet.create ({
         textAlign:"center",
         color:"gray",
         position:"absolute",
-        bottom: 0
+        bottom: 0,
+        fontFamily:"boldFont"
     },
     inputDiv:{
       width:"100%",
@@ -288,7 +312,9 @@ const styles = StyleSheet.create ({
       borderWidth: 1,
       borderColor:"gray",
       borderRadius: 10,
-      padding: 10
+      padding: 10,
+      fontSize: 20,
+      // fontFamily:"boldFont"
     },
     modalView:{
       backgroundColor:"white",
@@ -307,7 +333,8 @@ const styles = StyleSheet.create ({
       color:"red",
       fontSize:30,
       width:"full",
-      textAlign: "right"
+      textAlign: "right",
+      fontFamily:"boldFont"
     }
   })
 

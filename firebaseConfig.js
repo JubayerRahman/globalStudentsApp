@@ -6,17 +6,18 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAHHVotZUexziDZLYyj4nwnjk3rRXGXDcc",
-  authDomain: "branchloginapp.firebaseapp.com",
-  projectId: "branchloginapp",
-  storageBucket: "branchloginapp.appspot.com",
-  messagingSenderId: "158718819283",
-  appId: "1:158718819283:web:5c0763fdee935727f88d26"
+  apiKey: "AIzaSyCJsboq8ch0IrE4xUyz9JBSx0dyyGa_I2M",
+  authDomain: "shabuj-global-reg.firebaseapp.com",
+  projectId: "shabuj-global-reg",
+  storageBucket: "shabuj-global-reg.appspot.com",
+  messagingSenderId: "300548347701",
+  appId: "1:300548347701:web:ccaadb76c8c5e8f92a9e7c"
+
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app)
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 export default auth

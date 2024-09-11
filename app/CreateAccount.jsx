@@ -1,39 +1,47 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Alert } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { Link, useRouter } from 'expo-router'
 import { AllData } from '../contextApi'
+import { updateProfile } from 'firebase/auth'
+import auth from '../firebaseConfig'
 
-const Login = () => {
+const CreateAccount = () => {
 
-  const {user, setuser,  loading, Signin, SignOut} = useContext(AllData)
+  const {user, setuser,  loading, CreateAccount , Signin, SignOut} = useContext(AllData)
   const router= useRouter()
   console.log(Signin);
   
   const [modalView, setModalView] = useState(false)
+  const [FirstName, setFirstName] = useState("")
+  const [Lastname, setLastname] = useState("")
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
   const [ModalText, setModalText] = useState("")
 
 
 
-  const loginFunction = ()=>{
+  const AccountCreateFunction = ()=>{
 
-    if (Email === "" || Password === "" ) {
+    if (FirstName==="" || Lastname==="" ||  Email === "" || Password === "" ) {
       setModalView(true)
-      setModalText("Please put all the login cradention Correctly.")
+      setModalText("Please fill all the details fileds properly.")
     }
     else{
-      Signin(Email, Password)
+      CreateAccount(Email, Password)
       .then(result=>{
-        // console.log(result._tokenResponse.email)
+
         setuser(result._tokenResponse.email)
-        Alert.alert("You loggedin successfully")
-        // setu
+        
+        updateProfile(auth.currentUser,{
+            displayName:`${FirstName}+" "+${Lastname}`
+        })
+        .then(result=> console.log(result))
+
         setModalView(true),
         setModalText("You logged in successfully 👍")
         router.replace("/")
       })
-      .catch(error=> Alert.alert("Check your email and password again"))
+      .catch(error=> console.log(error))
     }
     
   }
@@ -49,8 +57,19 @@ const Login = () => {
   return (
     <View style={styles.mainDiv}>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome to</Text>
-        <Text style={styles.title}>Shabuj Global! 👋🏻</Text>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.lable}>First Name*</Text>
+        <TextInput 
+        value={FirstName}
+        onChangeText={text=> setFirstName(text)}
+        style={styles.input}  
+        placeholder='Jobayer' />
+        <Text style={styles.lable}>Last Name*</Text>
+        <TextInput 
+        value={Lastname}
+        onChangeText={text=> setLastname(text)}
+        style={styles.input}  
+        placeholder='Rahman Ohee' />
         <Text style={styles.lable}>Email*</Text>
         <TextInput 
         value={Email}
@@ -64,8 +83,8 @@ const Login = () => {
         style={styles.input} 
         secureTextEntry={true}   
         placeholder='Password' />
-        <TouchableOpacity onPress={()=>loginFunction()}  style={styles.logInbutton}  ><Text  href="./Login"  style={styles.registerButton}>Log In</Text></TouchableOpacity>
-        <Text style={styles.CreateAccountText}>Don't have an account? <Link style={styles.CreateAccountLink} href="/CreateAccount" >Create Account</Link>  </Text>
+        <TouchableOpacity onPress={()=>AccountCreateFunction()}  style={styles.logInbutton}  ><Text  href="./Login"  style={styles.registerButton}>Create Account</Text></TouchableOpacity>
+        <Text style={styles.CreateAccountText}>Already have an account? <Link style={styles.CreateAccountLink} href="/Login" >Log-in</Link>  </Text>
       </View>
       <Modal animationType='slide' transparent={true}  visible={modalView}>
         <View style={styles.modalView}>
@@ -110,35 +129,35 @@ title:{
 },
 lable:{
   fontSize: 18,
-  fontFamily:"boldFont",
   fontWeight:"bold",
   marginBottom: 20,
   fontWeight:"600",
-  marginLeft: 20
+  marginLeft: 20,
+  fontFamily:"boldFont"
 },
 input:{
   borderWidth: 1,
   padding: 10,
   borderRadius: 10,
   fontSize: 18,
-  // fontFamily:"boldFont",
   width: "90%",
   marginLeft:"auto",
   marginRight:"auto",
-  marginBottom: 10
+  marginBottom: 10,
+  // fontFamily:"boldFont"
 },
 loginButton:{
-  fontSize:30,
+  fontSize:20,
   fontWeight:600,
-  padding: 20,
   fontFamily:"boldFont"
 },
 logInbutton:{
   backgroundColor:"#16A34A",
   width:"90%",
-  padding:10,
+  padding:15,
   borderRadius: 5 ,
   marginBottom: 10 ,
+  marginTop:10,
   marginLeft:"auto",
   marginRight:"auto",
 },
@@ -183,4 +202,6 @@ cross:{
 }
 })
 
-export default Login
+export default CreateAccount
+
+// export default CreateAccount

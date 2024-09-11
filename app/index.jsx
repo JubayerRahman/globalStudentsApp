@@ -30,6 +30,13 @@ const Index = () => {
             router.navigate("Login")            
         }
     }
+    const StudentsRounts = ()=>{
+        if (user) {
+            router.navigate("AssignedStudents")
+        } else {
+            router.navigate("Login")            
+        }
+    }
     
 
   return (
@@ -43,10 +50,17 @@ const Index = () => {
                <Text style={styles.info}>At Shabuj Global Education, we guide you through every step of your academic journey. Whether you're registering for a course or filling out your student form, we're here to support you.</Text>
 
         {/* <Text>{user}</Text> */}
-        <TouchableOpacity style={styles.button} onPress={RegisterRoute} ><Text style={styles.registerButton}>Register</Text></TouchableOpacity>
+        <View style={styles.routes}>
+        <TouchableOpacity style={styles.button} onPress={StudentsRounts} >
+            <Text style={styles.registerButton}>My Students</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={RegisterRoute} >
+            <Text style={styles.registerButton}>Edit Form</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button}><Link href="./StudentForm" style={styles.registerButton}>Student Form</Link></TouchableOpacity>
         <TouchableOpacity style={user ? {display:"none"} :styles.logInbutton} ><Link href="./Login"  style={styles.registerButton}>Log In</Link></TouchableOpacity>
         <TouchableOpacity style={user? styles.logOutbutton: {display:"none"}} onPress={logountFunctin}><Text  style={styles.registerButton}>Log Out</Text></TouchableOpacity>
+        </View>
         <Text style={styles.cradit}>© 2024 Shabuj Global Education. All rights reserved.</Text>
         </View>
     </View>
@@ -86,9 +100,19 @@ const styles = StyleSheet.create ({
         letterSpacing: 2
         // marginBottom: 100
     },
+    routes:{
+        width:"100%",
+        justifyContent:"center",
+        alignItems:"center",
+        flexDirection:"row",
+        flexWrap:"wrap",
+        gap:10
+    },
     title:{
         fontWeight: "700",
         fontSize: 25,
+        // fontFamily:"boldFont",
+        // fontFamily:"commonFont"
     },
     image: {
         width: 50,
@@ -99,48 +123,68 @@ const styles = StyleSheet.create ({
         fontSize: 14,
         textAlign:"center",
         color:"gray",
-        marginBottom: 40
+        marginBottom: 40,
+        // fontFamily:"commonFont"
+        // fontFamily:"boldFont"
       },
     button:{
-        backgroundColor:"#2563EB",
-        width:"80%",
+        backgroundColor:"#292764",
+        width:"45%",
         padding:5,
         borderRadius: 5 ,
-        marginBottom: 10  
+        // marginBottom: 10 ,
+        height: 100,
+        justifyContent:"center"
     },
     logInbutton:{
         backgroundColor:"#16A34A",
-        width:"80%",
+        width:"45%",
         padding:5,
         borderRadius: 5 ,
-        marginBottom: 10  
+        // marginBottom: 10 ,
+        height: 100,
+        justifyContent:"center"
     },
     logOutbutton:{
         backgroundColor:"red",
-        width:"80%",
+        width:"45%",
         padding:5,
         borderRadius: 5 ,
-        marginBottom: 10  
+        // marginBottom: 10 ,
+        height: 100 ,
+        justifyContent:"center"
     },
     registerButton:{
-        fontSize:30,
+        fontSize:25,
         fontWeight:"600",
         textAlign:"center",
         color:"white",
+        fontFamily:"boldFont",
+        width:"100%",
+        height:"100%",
+        display:"flex",
+        flexDirection:"column",
+        paddingTop:"20%",
+        paddingBottom:"20%",
+        alignItems:"center",
+        justifyContent:"center"
     },
     text:{
-        fontSize: 16,
+        fontSize: 18,
         marginTop:15,
         marginBottom: 15,
-        fontWeight: "600",
-        textAlign:"center"
+        fontWeight: "500",
+        textAlign:"center",
+        // fontFamily:"boldFont"
+        // fontFamily:"commonFont"
     },
     cradit: {
-        fontSize: 12,
+        fontSize: 16,
         textAlign:"center",
         color:"gray",
         position:"absolute",
-        bottom: 0
+        bottom: 0,
+        fontFamily:"boldFont"
     }
 })
 
