@@ -14,7 +14,10 @@ const Register = () => {
 
   useEffect(()=>{
     Axios("/registrations")
-    .then(data=> setData(data.data))
+    .then(data=> {
+      const reverseData = data.data.reverse()
+      setData(reverseData)
+  })
     setLoading(false)
   },[])
 
@@ -58,7 +61,8 @@ const Register = () => {
 const styles = StyleSheet.create({
   main:{
     marginTop:40,
-    marginBottom:5
+    marginBottom:5,
+    backgroundColor:"#faf9f6"
   },
   listItme:{
     marginTop:10,

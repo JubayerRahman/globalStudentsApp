@@ -14,9 +14,11 @@ const AssignedStudents = () => {
 
   useEffect(()=>{
 
-    Axios(`/counsellors/${user}`)
-    // Axios(`/counsellors/skriyazahmed200@gmail.com`)
-    .then(res=> setAllData(res.data))
+    // Axios(`/counsellors/${user}`)
+    Axios(`/counsellors/skriyazahmed200@gmail.com`)
+    .then(res=>{ 
+      const reverseData = res.data.reverse()
+      setAllData(reverseData)})
   },[])
 
 
@@ -66,7 +68,8 @@ const AssignedStudents = () => {
 
 const Styles = StyleSheet.create({
   MainContainer:{
-    marginTop:30
+    marginTop:30,
+    backgroundColor:"#faf9f6"
   },
   headLine:{
     fontSize: 30,
