@@ -23,7 +23,7 @@ const AssignedStudents = () => {
 
   if (isLoading) {
     return (
-      <View style={Styles.listItme}>
+      <View style={Styles.loadingBox}>
         <ActivityIndicator size="large" color="#828CFF" />
         <Text style={StyleSheet.text}>Loading....</Text>
       </View>
@@ -95,6 +95,19 @@ const Styles = StyleSheet.create({
     // marginTop:5,
     height:"88%"
     // marginBottom:5
+  },
+  loadingBox: {
+    marginTop: '40%',
+    width: '95%',
+    borderColor: '#828CFF',
+    borderWidth: 3,
+    borderRightWidth: 6,
+    borderBottomWidth: 6,
+    padding: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderRadius: 15,
+    gap: 10,
   },
   listItme:{
     marginTop:10,

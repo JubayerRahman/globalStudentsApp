@@ -55,7 +55,7 @@ const Index = () => {
             <Text style={styles.registerButton}>My Students</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={RegisterRoute} >
-            <Text style={styles.registerButton}>Edit Form</Text>
+            <Text style={styles.registerButton}>registrations</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}><Link href="./StudentForm" style={styles.registerButton}>Student Form</Link></TouchableOpacity>
         <TouchableOpacity style={user ? {display:"none"} :styles.logInbutton} ><Link href="./Login"  style={styles.registerButton}>Log In</Link></TouchableOpacity>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create ({
         alignItems:"center",
         flexDirection:"row",
         flexWrap:"wrap",
-        gap:10
+        gap:3
     },
     title:{
         fontWeight: "700",
@@ -130,29 +130,29 @@ const styles = StyleSheet.create ({
       },
     button:{
         backgroundColor:"#292764",
-        width:"45%",
+        width:"49%",
         padding:5,
         borderRadius: 5 ,
         // marginBottom: 10 ,
-        height: 100,
+        height: 150,
         justifyContent:"center"
     },
     logInbutton:{
         backgroundColor:"#16A34A",
-        width:"45%",
+        width:"49%",
         padding:5,
         borderRadius: 5 ,
         // marginBottom: 10 ,
-        height: 100,
+        height: 150,
         justifyContent:"center"
     },
     logOutbutton:{
         backgroundColor:"red",
-        width:"45%",
+        width:"49%",
         padding:5,
         borderRadius: 5 ,
         // marginBottom: 10 ,
-        height: 100 ,
+        height: 150 ,
         justifyContent:"center"
     },
     registerButton:{
@@ -165,7 +165,7 @@ const styles = StyleSheet.create ({
         height:"100%",
         display:"flex",
         flexDirection:"column",
-        paddingTop:"20%",
+        paddingTop:"40%",
         paddingBottom:"20%",
         alignItems:"center",
         justifyContent:"center"

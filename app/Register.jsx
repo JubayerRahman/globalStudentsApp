@@ -2,8 +2,13 @@ import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet }
 import React, { useContext } from 'react';
 import UseAxios from './Hooks/UseAxios'; 
 import { useQuery } from '@tanstack/react-query';
+import { useNavigation } from 'expo-router';
+import { AllData } from '../contextApi';
 
 const Register = () => {
+
+  const navigation = useNavigation()
+  const {AppapplicationId, setApplicationId} = useContext(AllData)
   const Axios = UseAxios();
 
   const { data, error, isLoading } = useQuery({
@@ -16,7 +21,7 @@ const Register = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.listItem}>
+      <View style={styles.loadingBox}>
         <ActivityIndicator size="large" color="#828CFF" />
         <Text style={styles.text}>Loading....</Text>
       </View>
@@ -25,6 +30,11 @@ const Register = () => {
 
   if (error) {
     return <Text>An error has occurred: {error.message}</Text>;
+  }
+
+  const editButtonFunction = (id)=>{
+    setApplicationId(id)
+    navigation.navigate('EditScreen', {id})
   }
 
   return (
@@ -42,7 +52,7 @@ const Register = () => {
             Counsellor: {item.cpName === '' ? 'Not assigned' : item.cpName}
           </Text>
           <Text style={styles.SmallText}>Date Added: {item.time}</Text>
-          <TouchableOpacity onPress={() => EditPageFunction(item._id)} style={styles.editButton}>
+          <TouchableOpacity onPress={() => editButtonFunction(item._id)} style={styles.editButton}>
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
         </View>
@@ -56,6 +66,19 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 5,
     backgroundColor: '#faf9f6',
+  },
+  loadingBox: {
+    marginTop: '40%',
+    width: '95%',
+    borderColor: '#828CFF',
+    borderWidth: 3,
+    borderRightWidth: 6,
+    borderBottomWidth: 6,
+    padding: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderRadius: 15,
+    gap: 10,
   },
   listItem: {
     marginTop: 10,
