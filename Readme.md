@@ -1,17 +1,45 @@
-# Global Students App
-this app is to help users to collect students information who are interested in studying abroad and can also organize and allows them to set meeting with suitable counsellor the need.
+# Student Registration and Counseling App
 
-<video width="600" controls>
-  <source src="./assets/screen-20240906-044011.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+This app is designed to streamline the student registration process and provide a seamless platform for student-counselor interactions. The app features a comprehensive registration form for students seeking guidance from counselors, along with robust functionalities for counselors to manage and interact with their assigned students.
 
-## Key Features:
- * Regiattration Page
-* Upageting info page
-* firebase Authentication
-* Email notification
+### Key Features
 
-### [Apk file](https://github.com/JubayerRahman/globalStudentsApp/tree/main/Apk%20file)
-### [API Live Link](https://app-server-tan.vercel.app)
-### [Backend Repo](https://github.com/JubayerRahman/globalStudentsbackend)
+#### 1. Student Registration:
+
+  -  Students can register through a user-friendly form to request guidance from a counselor.
+  -  Upon registration, students receive a confirmation email with details about their registration and the next steps.
+
+#### 2. Counselor Account Management:
+
+- Counselors can create accounts and log in using Firebase Authentication, ensuring secure access to the system.
+- Counselors can view and edit the registration details of students, allowing them to update student information as needed.
+
+#### 3. Assigning Counselors to Students:
+
+- Counselors can be assigned to individual students for personalized guidance.
+- When a student is assigned a counselor, both the student and the counselor receive an email notification with relevant details.
+
+#### 4. Counselor Dashboard:
+
+- A dedicated route for counselors to view their assigned students.
+-The dashboard provides a clear view of the students who require guidance and those who have been assigned to them, enabling effective time management.
+
+#### 5. Real-Time Data Updates:
+
+- Integrated with TanStack Query (React Query) to ensure real-time data synchronization.
+- Counselors and students see updated data without having to refresh the page, ensuring a smooth user experience.
+
+#### 6. Email Notifications:
+
+- The app sends automatic email notifications:
+- When a student registers.
+- When a student is assigned to a counselor.
+
+# Technologies Used
+
+- React Native: For building a mobile-first, responsive app experience.
+- Firebase Authentication: Secure login and account management for counselors.
+- TanStack Query (React Query): Efficient state management and real-time data updates.
+- Axios: For API calls and data fetching.
+- React Navigation: Smooth navigation between different screens.
+- Node.js/Express: Backend API for handling registration, counselor assignments, and more.

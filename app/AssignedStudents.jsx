@@ -1,25 +1,38 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking, ActivityIndicator } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import UseAxios from './Hooks/UseAxios'
 import { styled } from 'nativewind'
 import { AllData } from '../contextApi'
+import { useQuery } from '@tanstack/react-query'
 
 const AssignedStudents = () => {
 
-  const [AllDatas, setAllData] = useState([])
-  const [FilteredData, setFilteredData] = useState([])
+  // const [AllDatas, setAllData] = useState([])
+  // const [FilteredData, setFilteredData] = useState([])
   const Axios = UseAxios()
 
   const {user} = useContext(AllData)
 
-  useEffect(()=>{
+  const {data: AllDatas, error, isLoading} = useQuery({
+    queryKey:["featchData"],
+    queryFn: async ()=> {
+      const responce = await  Axios.get(`/counsellors/${user}`)
+      return responce.data.reverse();
+    },
+  })
 
-    // Axios(`/counsellors/${user}`)
-    Axios(`/counsellors/skriyazahmed200@gmail.com`)
-    .then(res=>{ 
-      const reverseData = res.data.reverse()
-      setAllData(reverseData)})
-  },[])
+  if (isLoading) {
+    return (
+      <View style={Styles.listItme}>
+        <ActivityIndicator size="large" color="#828CFF" />
+        <Text style={StyleSheet.text}>Loading....</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return <Text>An error has occurred: {error.message}</Text>;
+  }
 
 
   const sendMail=(email)=>{

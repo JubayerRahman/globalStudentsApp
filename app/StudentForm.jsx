@@ -89,7 +89,7 @@ const StudentForm = () => {
           Alert.alert("we are facing some issues, please try again later")
         }
       })
-      .catch(error=> console.log(error)) 
+      .catch(error=> Alert.alert("Unfortunately, We are facing some issues, please check your internet connection and try again later.")) 
       console.log(studentData);
     }
     

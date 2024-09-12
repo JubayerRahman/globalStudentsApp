@@ -73,9 +73,21 @@ const EditScreen = () => {
         else{
             const counsellorEmail = 
             (
-                counsellor === "Nayeem Uddin" ?"nayeem@shabujglobal.in": 
-                counsellor === "Riyaz Ahmed" ?"skriyazahmed200@gmail.com": 
-                counsellor === "Nahid Ahmed" ?"nahidahmmed411@gmail.com":"" 
+                counsellor === "Rajen Kumar Deb" ?"raen@shabujglobal.org": 
+                counsellor === "Touhidur Rahman" ?"applications.bd@shabujglobal.com": 
+                counsellor === "Abu Sayef Khan" ?"applyhudds@shabujglobal.com": 
+                counsellor === "Jalish Mahmud" ?"Internationaladvice@shabujglobal.com": 
+                counsellor === "Amina Sultana Akhy" ?"amina@shabujglobal.org": 
+                counsellor === "Kmrun Nahar Ananna" ?"ananna@shabujglobal.org": 
+                counsellor === "Afsari Rayhan Asmeta" ?"asmeta@shabujglobal.org": 
+                counsellor === "Sumaiya Azad Sadiya" ?"sumaiya@shabujglobal.org": 
+                counsellor === "Mansibul Alam Sahil" ?"sahil@shabujglobal.org": 
+                counsellor === "Shakhawat Hossain" ?"shakhawat@shabujglobal.org": 
+                counsellor === "Shakil Ahmed" ? "shakil@shabujglobal.org": 
+                counsellor === "Debora Setu" ?"debora.setu@shabujglobal.org": 
+                counsellor === "Jannatul Ferdose Zim" ?"zim@shabujglobal.org": 
+                counsellor === "Moumita Mustari Promi" ?"moumita@shabujglobal.org": 
+                counsellor === "Abrarur aakter shuvon" ?"amina@shabujglobal.org":"" 
 
             )
             const studentData= {
@@ -117,7 +129,7 @@ const EditScreen = () => {
               Alert.alert("we are facing some issues, please try again later")
             }
           })
-          .catch(error=> console.log(error)) 
+          .catch(error=>  Alert.alert("Unfortunately, We are facing some issues, please check your internet connection and try again later.")) 
           console.log(studentData);
         }
         
@@ -192,9 +204,22 @@ const EditScreen = () => {
                 selectedValue={counsellor}
                 onValueChange={(itemValue)=> setCounsellor(itemValue)}
                 >
-                  <Picker.Item style={styles.input} label='Nayeem Uddin' value='Nayeem Uddin'/>
-                  <Picker.Item style={styles.input} label='Riyaz Ahmed' value='Riyaz Ahmed'/>
-                  <Picker.Item style={styles.input} label='Nahid Ahmmed' value='Nahid Ahmmed'/>
+                  <Picker.Item style={styles.input} label='Rajen Kumar Deb' value='Rajen Kumar Deb'/>
+                  <Picker.Item style={styles.input} label='Touhidur Rahman' value='Touhidur Rahman'/>
+                  <Picker.Item style={styles.input} label='Abu Sayef Khan' value='Abu Sayef Khan'/>
+                  <Picker.Item style={styles.input} label='Jalish Mahmud' value='Jalish Mahmudn'/>
+                  <Picker.Item style={styles.input} label='Amina Sultana Akhy' value='Amina Sultana Akhy'/>
+                  <Picker.Item style={styles.input} label='Kmrun Nahar Ananna' value='Kmrun Nahar Ananna'/>
+                  <Picker.Item style={styles.input} label='Afsari Rayhan Asmeta' value='Afsari Rayhan Asmeta'/>
+                  <Picker.Item style={styles.input} label='Sumaiya Azad Sadiya' value='Sumaiya Azad Sadiya'/>
+                  <Picker.Item style={styles.input} label='Mansibul Alam Sahil' value='Mansibul Alam Sahil'/>
+                  <Picker.Item style={styles.input} label='Shakhawat Hossain' value='Shakhawat Hossain'/>
+                  <Picker.Item style={styles.input} label='Shakil Ahmed' value='Shakil Ahmed'/>
+                  <Picker.Item style={styles.input} label='Debora Setu' value='Debora Setu'/>
+                  <Picker.Item style={styles.input} label='Jannatul Ferdose Zim' value='Jannatul Ferdose Zim'/>
+                  <Picker.Item style={styles.input} label='Moumita Mustari Promi' value='Moumita Mustari Promi'/>
+                  <Picker.Item style={styles.input} label='Abrarur aakter shuvon' value='Abrarur aakter shuvon'/>
+                  {/* <Picker.Item style={styles.input} label='Al-Amin' value='Al-Amin'/> */}
                 </Picker>
               </View> 
             </View>

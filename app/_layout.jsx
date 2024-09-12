@@ -10,6 +10,7 @@ import auth from '../firebaseConfig'
 import { StatusBar } from 'expo-status-bar'
 import { useNetInfo, useNetInfoInstance } from '@react-native-community/netinfo'
 import { useFonts } from 'expo-font';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const _layout = () => {
   const [user, setuser] = useState()
@@ -18,6 +19,8 @@ const _layout = () => {
   const router = useRouter()
   const navigation = useNavigation()
   const [isConnected, setIsConnected] = useState(true);
+
+  const queryClient = new QueryClient()
 
   const [fontLoader] =  useFonts({
     "boldFont" : require('../assets/fonts/BOLDE.ttf'),
@@ -83,6 +86,7 @@ const _layout = () => {
     return (<View><Text>Loading...</Text></View>)
   }
   return (
+    <QueryClientProvider client={queryClient}>
     <AllData.Provider value={{
       user,
       setuser,
@@ -100,6 +104,7 @@ const _layout = () => {
         </Stack>
         <StatusBar backgroundColor='white'  style='dark' />
     </AllData.Provider>
+    </QueryClientProvider>
   )
 }
 
