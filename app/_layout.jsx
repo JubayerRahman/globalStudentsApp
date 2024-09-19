@@ -104,7 +104,11 @@ const _layout = () => {
   }
 
   if (!fontLoader) {
-    return (<View><Text>Loading...</Text></View>)
+    return (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  )
   }
   return (
     <QueryClientProvider client={queryClient}>
