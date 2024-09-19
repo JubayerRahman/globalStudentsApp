@@ -1,11 +1,11 @@
 import { View, Text, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import NetInfo from "@react-native-community/netinfo";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // import Home from '.'
 import { AllData } from '../contextApi'
 import { Slot, Stack, useNavigation, useRouter } from 'expo-router'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, initializeAuth } from 'firebase/auth'
 import auth from '../firebaseConfig'
 import { StatusBar } from 'expo-status-bar'
 import { useNetInfo, useNetInfoInstance } from '@react-native-community/netinfo'
@@ -27,39 +27,58 @@ const _layout = () => {
     "commonFont" : require('../assets/fonts/Montserrat-VariableFont_wght.ttf')
   })
 
+  const saveUsers = async (user)=>{
+    try {
+      const JsonValue = JSON.stringify(user)
+      await AsyncStorage.setItem('@user', JsonValue)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const LodeUser = async ()=>{
+    try {
+      const  JsonViewer = await AsyncStorage.getItem('@user')
+      return JsonViewer !=  null ? JSON.parse(JsonViewer) : null
+    } catch (error) {
+      console.log(error);
+            
+    }
+  }
+
   useEffect(()=>{
-    const unSubscribe = onAuthStateChanged(auth, (user)=>{
+    const unSubscribe = onAuthStateChanged(auth, async(user)=>{
       if (user) {
-        setuser(user),
+        await saveUsers(user.email)
+        setuser(user.email),
         setLoading(false)
       }
       else{
         setuser("")
+        await AsyncStorage.removeItem('@user'); 
         setLoading(false)
-        // router.replace("/Login")
       }
     })
-
-    const NetConnection = NetInfo.addEventListener( state=>{
-      setIsConnected(state.isConnected)
-    })
-    return NetConnection()
+    return ()=> unSubscribe()
 
   },[])
 
-  // useEffect(()=>{
+  useEffect(()=>{
+    const checkuser = async()=>{
+      const savedUser =  await LodeUser()
 
-  //   // const backAction = () => {
-  //   //   // Redirect to Home screen
-  //   //   navigation.navigate('index');
-  //   //   return true; // Prevent default behavior
-  //   // };
+      if (savedUser) {
+        setuser(savedUser)
+      }
+    }
+    checkuser()
+  },[])
 
+  console.log(user);
+  
 
-  //  const backHandeler= BackHandler.addEventListener("hardwareBackPress", backAction)
-
-  //  return  () => backHandeler.remove()
-  // },[navigation])
+  
 
   const CreateAccount = (email, password)=>{
     return createUserWithEmailAndPassword(auth, email, password)
@@ -70,7 +89,9 @@ const _layout = () => {
     return signInWithEmailAndPassword(auth, email, password)
   }
 
-  const SignOut = ()=>{
+  const SignOut = async()=>{
+    await AsyncStorage.removeItem('@user')
+    setuser('')
     return signOut(auth)
   }
   
