@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 const Index = () => {
 
-    const {user, SignOut} = useContext(AllData)
+    const {user, SignOut, status} = useContext(AllData)
     const router = useNavigation()
 
     const logountFunctin = ()=>{
@@ -37,11 +37,20 @@ const Index = () => {
             router.navigate("Login")            
         }
     }
+
+    console.log(status.isConnected);
+    
     
 
   return (
     <View style={styles.mainDiv}>
         <View style={styles.container}>
+            {
+                status.isConnected ?
+                <Text></Text>
+                :
+                <Text style={styles.statusText}>You are not connected to the internet</Text>
+            }
             <View style={styles.nameContainer}>
                 <Image source={require('../assets/Group-BLRd3Svh.png')} style={styles.image} alt='Ohee'  />
                <Text style={styles.title}>Shabuj Global Education</Text>
@@ -77,7 +86,21 @@ const styles = StyleSheet.create ({
         flexDirection:"column",
         alignItems:"center",
         justifyContent:"center",
-        backgroundColor:"#faf9f6"
+        backgroundColor:"#faf9f6",
+        position:"relative"
+    },
+    statusText:{
+        fontFamily:"boldFont",
+        position:'absolute',
+        top:40,
+        fontSize:20,
+        backgroundColor:"black",
+        width:"100%",
+        color:"white",
+        textAlign:"center",
+        padding:10,
+        borderRadius:20,
+        opacity:0.9
     },
     container:{
         display:"flex",

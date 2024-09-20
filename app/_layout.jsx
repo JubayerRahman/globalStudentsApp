@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useNetInfo, useNetInfoInstance } from '@react-native-community/netinfo'
 import { useFonts } from 'expo-font';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import * as Network from 'expo-network'
 
 const _layout = () => {
   const [user, setuser] = useState()
@@ -18,9 +19,11 @@ const _layout = () => {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const navigation = useNavigation()
-  const [isConnected, setIsConnected] = useState(true);
+  // const [isConnected, setIsConnected] = useState(true);
+  const [status, setstatus] = useState()
 
   const queryClient = new QueryClient()
+
 
   const [fontLoader] =  useFonts({
     "boldFont" : require('../assets/fonts/BOLDE.ttf'),
@@ -31,6 +34,7 @@ const _layout = () => {
     try {
       const JsonValue = JSON.stringify(user)
       await AsyncStorage.setItem('@user', JsonValue)
+      
     } catch (error) {
       console.log(error);
       
@@ -47,7 +51,9 @@ const _layout = () => {
     }
   }
 
-  useEffect(()=>{
+  useEffect( async()=>{
+    const NetwoeksStatus = await Network.getNetworkStateAsync()
+    setstatus(NetwoeksStatus)
     const unSubscribe = onAuthStateChanged(auth, async(user)=>{
       if (user) {
         await saveUsers(user.email)
@@ -62,7 +68,8 @@ const _layout = () => {
     })
     return ()=> unSubscribe()
 
-  },[])
+  },[Network])
+  
 
   useEffect(()=>{
     const checkuser = async()=>{
@@ -94,14 +101,9 @@ const _layout = () => {
     setuser('')
     return signOut(auth)
   }
+
+  // console.log(status);
   
-  const contextData = {
-    user,
-    loading,
-    CreateAccount,
-    Signin,
-    SignOut
-  }
 
   if (!fontLoader) {
     return (
@@ -120,11 +122,12 @@ const _layout = () => {
       loading,
       CreateAccount,
       Signin,
-      SignOut}}>
+      SignOut,
+      status,
+      setstatus
+      }}>
+        
         <Stack screenOptions={{headerShown: false}} initialRouteName='index'  >
-        {!isConnected && (
-        <Text style={styles.offlineText}>You are offline. Please check your internet connection.</Text>
-      )}
           <Stack.Screen name='index' options={{headerShown:false}} />
         </Stack>
         <StatusBar backgroundColor='white'  style='dark' />
