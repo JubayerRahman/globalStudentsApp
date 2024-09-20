@@ -20,7 +20,7 @@ const _layout = () => {
   const router = useRouter()
   const navigation = useNavigation()
   // const [isConnected, setIsConnected] = useState(true);
-  const [status, setstatus] = useState()
+  const [status, setstatus] = useState(false)
 
   const queryClient = new QueryClient()
 
@@ -51,9 +51,13 @@ const _layout = () => {
     }
   }
 
-  useEffect( async()=>{
-    const NetwoeksStatus = await Network.getNetworkStateAsync()
-    setstatus(NetwoeksStatus)
+  
+  useEffect( ()=>{
+    setInterval(async() => {
+      const NetwoeksStatus = await Network.getNetworkStateAsync()
+      setstatus(NetwoeksStatus.isConnected)
+    }, 5000);
+    
     const unSubscribe = onAuthStateChanged(auth, async(user)=>{
       if (user) {
         await saveUsers(user.email)
@@ -68,7 +72,7 @@ const _layout = () => {
     })
     return ()=> unSubscribe()
 
-  },[Network])
+  },[])
   
 
   useEffect(()=>{
@@ -82,7 +86,7 @@ const _layout = () => {
     checkuser()
   },[])
 
-  console.log(user);
+  console.log(status);
   
 
   

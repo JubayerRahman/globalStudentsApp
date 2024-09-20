@@ -35,6 +35,16 @@ This app is designed to streamline the student registration process and provide 
 - When a student registers.
 - When a student is assigned to a counselor.
 
+#### 7. Network Status Checking:
+
+- Feature implemented to check network connectivity.
+- Displays a message when the app loses network connection.
+
+#### 8. Firebase Authentication:
+
+- Firebase Authentication is implemented for secure login.
+- Authentication data is stored in AsyncStorage after login and removed upon logout.
+
 # Technologies Used
 
 - React Native: For building a mobile-first, responsive app experience.

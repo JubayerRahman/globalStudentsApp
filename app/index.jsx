@@ -38,7 +38,7 @@ const Index = () => {
         }
     }
 
-    console.log(status.isConnected);
+    console.log(status);
     
     
 
@@ -46,7 +46,7 @@ const Index = () => {
     <View style={styles.mainDiv}>
         <View style={styles.container}>
             {
-                status.isConnected ?
+                status ?
                 <Text></Text>
                 :
                 <Text style={styles.statusText}>You are not connected to the internet</Text>
