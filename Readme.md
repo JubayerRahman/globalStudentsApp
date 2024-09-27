@@ -29,11 +29,12 @@ This app is designed to streamline the student registration process and provide 
 - Integrated with TanStack Query (React Query) to ensure real-time data synchronization.
 - Counselors and students see updated data without having to refresh the page, ensuring a smooth user experience.
 
-#### 6. Email Notifications:
+#### 6. Notifications:
 
 - The app sends automatic email notifications:
 - When a student registers.
 - When a student is assigned to a counselor.
+- Push Notification.
 
 #### 7. Network Status Checking:
 

@@ -12,6 +12,7 @@ import { useNetInfo, useNetInfoInstance } from '@react-native-community/netinfo'
 import { useFonts } from 'expo-font';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Network from 'expo-network'
+import * as Notifications from "expo-notifications"
 
 const _layout = () => {
   const [user, setuser] = useState()
@@ -19,8 +20,8 @@ const _layout = () => {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const navigation = useNavigation()
-  // const [isConnected, setIsConnected] = useState(true);
-  const [status, setstatus] = useState(false)
+  const [status, setstatus] = useState(true)
+  const [counsellorName, setCounsellorName] = useState("")
 
   const queryClient = new QueryClient()
 
@@ -56,12 +57,13 @@ const _layout = () => {
     setInterval(async() => {
       const NetwoeksStatus = await Network.getNetworkStateAsync()
       setstatus(NetwoeksStatus.isConnected)
-    }, 5000);
+    }, 1000);
     
     const unSubscribe = onAuthStateChanged(auth, async(user)=>{
       if (user) {
         await saveUsers(user.email)
         setuser(user.email),
+        setCounsellorName(user.displayName),
         setLoading(false)
       }
       else{
@@ -86,7 +88,16 @@ const _layout = () => {
     checkuser()
   },[])
 
-  console.log(status);
+  console.log(user);
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
+  
   
 
   
@@ -128,7 +139,9 @@ const _layout = () => {
       Signin,
       SignOut,
       status,
-      setstatus
+      setstatus,
+      counsellorName, 
+      setCounsellorName
       }}>
         
         <Stack screenOptions={{headerShown: false}} initialRouteName='index'  >

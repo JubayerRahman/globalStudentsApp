@@ -72,6 +72,11 @@ const EditScreen = () => {
         }
         else{
             const counsellorEmail = 
+
+
+        `
+Abrarur aakter shuvon	
+Al-Amin`
             (
                 counsellor === "Rajen Kumar Deb" ?"raen@shabujglobal.org": 
                 counsellor === "Touhidur Rahman" ?"applications.bd@shabujglobal.com": 
@@ -87,7 +92,7 @@ const EditScreen = () => {
                 counsellor === "Debora Setu" ?"debora.setu@shabujglobal.org": 
                 counsellor === "Jannatul Ferdose Zim" ?"zim@shabujglobal.org": 
                 counsellor === "Moumita Mustari Promi" ?"moumita@shabujglobal.org": 
-                counsellor === "Abrarur aakter shuvon" ?"amina@shabujglobal.org":"" 
+                counsellor === "Abrarur aakter shuvon" ?"absar@shabujglobal.org":"" 
 
             )
             const studentData= {

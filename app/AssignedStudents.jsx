@@ -4,22 +4,72 @@ import UseAxios from './Hooks/UseAxios'
 import { styled } from 'nativewind'
 import { AllData } from '../contextApi'
 import { useQuery } from '@tanstack/react-query'
+import * as Notifications from "expo-notifications";
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from "expo-background-fetch"
 
 const AssignedStudents = () => {
 
-  // const [AllDatas, setAllData] = useState([])
-  // const [FilteredData, setFilteredData] = useState([])
+
   const Axios = UseAxios()
 
-  const {user} = useContext(AllData)
+  const { counsellorName, setCounsellorName} = useContext(AllData)
+  console.log(counsellorName);
+  
 
-  const {data: AllDatas, error, isLoading} = useQuery({
-    queryKey:["featchData"],
-    queryFn: async ()=> {
-      const responce = await  Axios.get(`/counsellors/${user}`)
-      return responce.data.reverse();
-    },
-  })
+  const {user} = useContext(AllData)
+  console.log("Hi "+user);
+  
+
+  // const {data: AllDatas, error, isLoading} = useQuery({
+  //   queryKey:["featchData"],
+  //   queryFn: async ()=> {
+  //     const responce = await  Axios.get(`/counsellors/${user}`)
+  //     return responce.data.reverse();
+  //   },
+  // })
+
+  const [AllDatas, setAllDatas] = useState([])
+  const [newData, setNewData] = useState([])
+  const [isLoading, setisLoading] = useState(false)
+
+
+  useEffect(()=>{
+   Axios.get(`/counsellors/${user}`)
+   .then(res=> setAllDatas(res.data.reverse()))
+   setInterval(() => {
+    Axios.get(`/counsellors/${user}`)
+    .then(res=> setNewData(res.data.reverse()))
+  }, 30000);
+  const requestPermissions = async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== 'granted') {
+      alert("Permission for notifications is not granted!!");
+    }
+  };
+  
+  requestPermissions();
+},[])
+
+if (newData.length > AllDatas.length) {
+  const Function  = async ()=>{
+    // const {Status} = await Notifications.getPermissionsAsync()
+    // if (Status === "granted") {
+      await  Notifications.scheduleNotificationAsync({
+        content: {
+          title:"New Student 🎉🎉",
+          body: "You have a new student to guide",
+          sound: true,
+        },
+        trigger: null,
+      });
+    // }
+  }
+  Function()
+  setAllDatas(newData)
+}
+console.log(newData.length);
+
 
   if (isLoading) {
     return (
@@ -30,9 +80,9 @@ const AssignedStudents = () => {
     );
   }
 
-  if (error) {
-    return <Text>An error has occurred: {error.message}</Text>;
-  }
+  // if (error) {
+  //   return <Text>An error has occurred: {error.message}</Text>;
+  // }
 
 
   const sendMail=(email)=>{
@@ -42,13 +92,41 @@ const AssignedStudents = () => {
     Linking.openURL(`tel:${mobile}`)
   }
 
-  console.log(AllDatas);
+  // notification Function
+
+  const sendNotificationFunc = async () => {
+    const { status } = await Notifications.getPermissionsAsync();
+  
+    if (status !== 'granted') {
+      alert("Permission for notifications is not granted!!");
+      return;
+    }
+  
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Ohee Notification",
+        body: "Notification Body",
+        sound: true,
+      },
+      trigger: null,
+    });
+  };
+  
+
+    const sendNorification = ()=>{
+        sendNotificationFunc()
+        
+      }
+
+  // console.log(AllDatas);
   
 
   return (
     <View style={Styles.MainContainer}>
       {AllDatas.length>0?
-      <View><Text style={Styles.headLine}> Your students:</Text>
+      <View>
+        <Text style={Styles.cName}> Hello, <Text>{counsellorName}</Text></Text>
+        <Text style={Styles.headLine}> Your students: {AllDatas.length}</Text>
       <FlatList
       style={Styles.main}
       data={AllDatas}
@@ -74,7 +152,10 @@ const AssignedStudents = () => {
   )}
       ></FlatList>
       </View> :
-      <View style={Styles.errorView}><Text style={Styles.headLine}>You Dont Have any Students at this moment</Text></View>}
+      <View style={Styles.errorView}>
+        <Text style={Styles.headLine}> Hello, <Text>{counsellorName}</Text></Text>
+        <TouchableOpacity style={user === "ohee@gmail.com" ? {display:"flex"}:{display:"none"}}  onPress={sendNorification}><Text>Send Notification</Text></TouchableOpacity>
+        <Text style={Styles.headLine}>You Dont Have any Students at this moment</Text></View>}
     </View>
   )
 }
@@ -84,16 +165,26 @@ const Styles = StyleSheet.create({
     marginTop:30,
     backgroundColor:"#faf9f6"
   },
-  headLine:{
+  cName:{
     fontSize: 30,
     marginTop: 50,
-    marginBottom: 10,
-    textAlign:"center",
+    // marginBottom: 10,
+    // textAlign:"center",
     fontFamily:"boldFont"
+  },
+  headLine:{
+    fontSize: 30,
+    marginTop: 30,
+    // marginBottom: 10,
+    // textAlign:"center",
+    fontFamily:"boldFont",
+    borderBottomColor:"black",
+    borderBottomWidth: 2,
+    paddingBottom: 4,
   },
   main:{
     // marginTop:5,
-    height:"88%"
+    height:"80%"
     // marginBottom:5
   },
   loadingBox: {
@@ -173,10 +264,8 @@ const Styles = StyleSheet.create({
   },
   errorView:{
     height:  "100%",
-    // backgroundColor:"black",
     marginTop:"auto",
     marginBottom:"auto",
-    justifyContent:"center",
     padding: 25
   }
 })

@@ -7,7 +7,7 @@ import auth from '../firebaseConfig'
 
 const CreateAccount = () => {
 
-  const {user, setuser,  loading, CreateAccount , Signin, SignOut} = useContext(AllData)
+  const {user, setuser,  loading, CreateAccount , Signin, SignOut, counsellorName, setCounsellorName} = useContext(AllData)
   const router= useRouter()
   console.log(Signin);
   
@@ -33,9 +33,12 @@ const CreateAccount = () => {
         setuser(result._tokenResponse.email)
         
         updateProfile(auth.currentUser,{
-            displayName:`${FirstName}+" "+${Lastname}`
+            displayName:`${FirstName} ${Lastname}`
         })
-        .then(result=> console.log(result))
+        .then(result=>{ 
+          setCounsellorName(`${FirstName} ${Lastname}`)
+          console.log(result)
+        })
 
         setModalView(true),
         setModalText("You logged in successfully 👍")

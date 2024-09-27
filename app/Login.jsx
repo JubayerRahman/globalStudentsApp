@@ -5,7 +5,7 @@ import { AllData } from '../contextApi'
 
 const Login = () => {
 
-  const {user, setuser,  loading, Signin, SignOut} = useContext(AllData)
+  const {user, setuser,  loading, Signin, SignOut, counsellorName, setCounsellorName} = useContext(AllData)
   const router= useRouter()
   console.log(Signin);
   
@@ -26,7 +26,9 @@ const Login = () => {
       Signin(Email, Password)
       .then(result=>{
         // console.log(result._tokenResponse.email)
+        console.log(result)
         setuser(result._tokenResponse.email)
+        setCounsellorName(result._tokenResponse.displayName)
         Alert.alert("You loggedin successfully")
         // setu
         setModalView(true),
@@ -65,7 +67,7 @@ const Login = () => {
         secureTextEntry={true}   
         placeholder='Password' />
         <TouchableOpacity onPress={()=>loginFunction()}  style={styles.logInbutton}  ><Text  href="./Login"  style={styles.registerButton}>Log In</Text></TouchableOpacity>
-        <Text style={styles.CreateAccountText}>Don't have an account? <Link style={styles.CreateAccountLink} href="/CreateAccount" >Create Account</Link>  </Text>
+        {/* <Text style={styles.CreateAccountText}>Don't have an account? <Link style={styles.CreateAccountLink} href="/CreateAccount" >Create Account</Link>  </Text> */}
       </View>
       <Modal animationType='slide' transparent={true}  visible={modalView}>
         <View style={styles.modalView}>

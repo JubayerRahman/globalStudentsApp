@@ -3,6 +3,8 @@ import React, { useContext } from 'react'
 import { AllData } from '../contextApi'
 import { Link, useNavigation, useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth';
+import * as Notification from "expo-notifications"
+// import * as Permission from "expo-p"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAHHVotZUexziDZLYyj4nwnjk3rRXGXDcc",
@@ -38,6 +40,8 @@ const Index = () => {
         }
     }
 
+    
+
     console.log(status);
     
     
@@ -51,25 +55,28 @@ const Index = () => {
                 :
                 <Text style={styles.statusText}>You are not connected to the internet</Text>
             }
+            <View style={styles.upperSection}>
             <View style={styles.nameContainer}>
                 <Image source={require('../assets/Group-BLRd3Svh.png')} style={styles.image} alt='Ohee'  />
                <Text style={styles.title}>Shabuj Global Education</Text>
             </View>
             <Text style={styles.text}  >Empowering Your Global Education Journey</Text>
                <Text style={styles.info}>At Shabuj Global Education, we guide you through every step of your academic journey. Whether you're registering for a course or filling out your student form, we're here to support you.</Text>
+             </View>
 
         {/* <Text>{user}</Text> */}
         <View style={styles.routes}>
         <TouchableOpacity style={styles.button} onPress={StudentsRounts} >
             <Text style={styles.registerButton}>My Students</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={RegisterRoute} >
+        {/* <TouchableOpacity style={styles.button} onPress={RegisterRoute} >
             <Text style={styles.registerButton}>registrations</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}><Link href="./StudentForm" style={styles.registerButton}>Student Form</Link></TouchableOpacity>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity style={styles.button}><Link href="./StudentForm" style={styles.registerButton}>Student Form</Link></TouchableOpacity> */}
         <TouchableOpacity style={user ? {display:"none"} :styles.logInbutton} ><Link href="./Login"  style={styles.registerButton}>Log In</Link></TouchableOpacity>
         <TouchableOpacity style={user? styles.logOutbutton: {display:"none"}} onPress={logountFunctin}><Text  style={styles.registerButton}>Log Out</Text></TouchableOpacity>
         </View>
+        <Text style={styles.linkP}>Visit our official website <Link style={styles.linkTxt}  href="https://www.shabujglobal.com/" target='_blank'>Shabuj Global Education</Link> </Text>
         <Text style={styles.cradit}>© 2024 Shabuj Global Education. All rights reserved.</Text>
         </View>
     </View>
@@ -88,6 +95,10 @@ const styles = StyleSheet.create ({
         justifyContent:"center",
         backgroundColor:"#faf9f6",
         position:"relative"
+    },
+    upperSection:{
+        position:"absolute",
+        top:"10%"
     },
     statusText:{
         fontFamily:"boldFont",
@@ -108,9 +119,9 @@ const styles = StyleSheet.create ({
         height:"100%",
         flexDirection:"column",
         alignItems:"center",
-        justifyContent:"center",
+        justifyContent:"space-evenly",
         textAlign:"center",
-        borderRadius:5,
+        // borderRadius:5,
         padding: 10,
         backgroundColor:"white"
     },
@@ -179,7 +190,7 @@ const styles = StyleSheet.create ({
         justifyContent:"center"
     },
     registerButton:{
-        fontSize:25,
+        fontSize:30,
         fontWeight:"600",
         textAlign:"center",
         color:"white",
@@ -188,8 +199,8 @@ const styles = StyleSheet.create ({
         height:"100%",
         display:"flex",
         flexDirection:"column",
-        paddingTop:"40%",
-        paddingBottom:"20%",
+        paddingTop:"35%",
+        paddingBottom:"35%",
         alignItems:"center",
         justifyContent:"center"
     },
@@ -201,6 +212,19 @@ const styles = StyleSheet.create ({
         textAlign:"center",
         // fontFamily:"boldFont"
         // fontFamily:"commonFont"
+    },
+    linkTxt: {
+        fontSize: 18,
+        textAlign:"center",
+        color:"#292764",
+    },
+    linkP: {
+        fontSize: 18,
+        textAlign:"center",
+        color:"gray",
+        position:"absolute",
+        bottom: 20,
+        fontFamily:"boldFont"
     },
     cradit: {
         fontSize: 16,
