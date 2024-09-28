@@ -21,54 +21,14 @@ const AssignedStudents = () => {
   console.log("Hi "+user);
   
 
-  // const {data: AllDatas, error, isLoading} = useQuery({
-  //   queryKey:["featchData"],
-  //   queryFn: async ()=> {
-  //     const responce = await  Axios.get(`/counsellors/${user}`)
-  //     return responce.data.reverse();
-  //   },
-  // })
+  const {data: AllDatas, error, isLoading} = useQuery({
+    queryKey:["featchData"],
+    queryFn: async ()=> {
+      const responce = await  Axios.get(`/counsellors/${user}`)
+      return responce.data.reverse();
+    },
+  })
 
-  const [AllDatas, setAllDatas] = useState([])
-  const [newData, setNewData] = useState([])
-  const [isLoading, setisLoading] = useState(false)
-
-
-  useEffect(()=>{
-   Axios.get(`/counsellors/${user}`)
-   .then(res=> setAllDatas(res.data.reverse()))
-   setInterval(() => {
-    Axios.get(`/counsellors/${user}`)
-    .then(res=> setNewData(res.data.reverse()))
-  }, 30000);
-  const requestPermissions = async () => {
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== 'granted') {
-      alert("Permission for notifications is not granted!!");
-    }
-  };
-  
-  requestPermissions();
-},[])
-
-if (newData.length > AllDatas.length) {
-  const Function  = async ()=>{
-    // const {Status} = await Notifications.getPermissionsAsync()
-    // if (Status === "granted") {
-      await  Notifications.scheduleNotificationAsync({
-        content: {
-          title:"New Student 🎉🎉",
-          body: "You have a new student to guide",
-          sound: true,
-        },
-        trigger: null,
-      });
-    // }
-  }
-  Function()
-  setAllDatas(newData)
-}
-console.log(newData.length);
 
 
   if (isLoading) {

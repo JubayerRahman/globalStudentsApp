@@ -1,19 +1,10 @@
 import { View, Text , StyleSheet, TouchableOpacity, Image} from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AllData } from '../contextApi'
 import { Link, useNavigation, useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth';
 import * as Notification from "expo-notifications"
-// import * as Permission from "expo-p"
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAHHVotZUexziDZLYyj4nwnjk3rRXGXDcc",
-    authDomain: "branchloginapp.firebaseapp.com",
-    projectId: "branchloginapp",
-    storageBucket: "branchloginapp.appspot.com",
-    messagingSenderId: "158718819283",
-    appId: "1:158718819283:web:5c0763fdee935727f88d26"
-  };
+import axios from 'axios';
 
 const Index = () => {
 
@@ -43,6 +34,28 @@ const Index = () => {
     
 
     console.log(status);
+
+    // Notification Function
+
+    async function registerForPushNotifications(user){
+
+        const {status} = await  Notification.getPermissionsAsync()
+
+        if (status !== "granted") {
+            alert("Notification is not granted")
+            return
+        }
+        const token = (await Notification.getExpoPushTokenAsync()).data
+
+        await axios.post('http://192.168.174.180:3000/saveToken',{
+            user,
+            expoToken: token
+        })
+    }
+
+    useEffect(()=>{
+        registerForPushNotifications(user)
+    },[])
     
     
 
