@@ -1,5 +1,7 @@
 import { View, Text, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import * as Notification from "expo-notifications"
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // import Home from '.'
@@ -105,7 +107,7 @@ const _layout = () => {
   const CreateAccount = (email, password)=>{
     return createUserWithEmailAndPassword(auth, email, password)
   }
-
+  
   const Signin = (email, password)=>{
     setLoading(true)
     return signInWithEmailAndPassword(auth, email, password)
@@ -116,6 +118,35 @@ const _layout = () => {
     setuser('')
     return signOut(auth)
   }
+
+      // Notification Function
+
+      async function registerForPushNotifications(user){
+
+        const {status} = await  Notification.getPermissionsAsync()
+
+        if (status !== "granted") {
+            alert("Notification is not granted")
+            return
+        }
+
+        // expo Token
+
+        const token = (await Notification.getExpoPushTokenAsync()).data
+
+        // Firebase Experiment
+        // await messaging().requestPermission();
+
+        // const fcmToken = await messaging().getToken()
+
+        // tomorrow will work here
+
+        await axios.post('https://sge-reg.vercel.app/saveToken',{
+            user,
+            expoToken: token
+            // fcmToken
+        })
+    }
 
   // console.log(status);
   
@@ -141,7 +172,8 @@ const _layout = () => {
       status,
       setstatus,
       counsellorName, 
-      setCounsellorName
+      setCounsellorName,
+      registerForPushNotifications
       }}>
         
         <Stack screenOptions={{headerShown: false}} initialRouteName='index'  >

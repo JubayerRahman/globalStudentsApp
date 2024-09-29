@@ -5,7 +5,7 @@ import { AllData } from '../contextApi'
 
 const Login = () => {
 
-  const {user, setuser,  loading, Signin, SignOut, counsellorName, setCounsellorName} = useContext(AllData)
+  const {user, setuser,  loading, Signin, SignOut, counsellorName, setCounsellorName, registerForPushNotifications} = useContext(AllData)
   const router= useRouter()
   console.log(Signin);
   
@@ -44,6 +44,9 @@ const Login = () => {
   }
   
   console.log(user);
+  if (user) {
+    registerForPushNotifications(user)
+  }
   
 
   // importig all data & function from context

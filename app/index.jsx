@@ -5,6 +5,7 @@ import { Link, useNavigation, useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth';
 import * as Notification from "expo-notifications"
 import axios from 'axios';
+// import messaging from '@react-native-firebase/messaging'
 
 const Index = () => {
 
@@ -13,8 +14,14 @@ const Index = () => {
 
     const logountFunctin = ()=>{
         SignOut()
+        // will work here too
         .then(result=> console.log(result))
         .catch(error => console.error("Error signing out:", error));
+        axios.delete('http://192.168.174.180:3000/removeToken', {
+            data: { user }
+          })
+        .then(res=> console.log(res.data))
+        .catch(error => console.log(error))
     }
     const RegisterRoute = ()=>{
         if (user) {
@@ -35,27 +42,7 @@ const Index = () => {
 
     console.log(status);
 
-    // Notification Function
 
-    async function registerForPushNotifications(user){
-
-        const {status} = await  Notification.getPermissionsAsync()
-
-        if (status !== "granted") {
-            alert("Notification is not granted")
-            return
-        }
-        const token = (await Notification.getExpoPushTokenAsync()).data
-
-        await axios.post('http://192.168.174.180:3000/saveToken',{
-            user,
-            expoToken: token
-        })
-    }
-
-    useEffect(()=>{
-        registerForPushNotifications(user)
-    },[])
     
     
 
