@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "GlobalStudents",
+    "slug": "learningNotifiation",
+    "scheme": "GlobalStudents",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/Group-BLRd3Svh.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.expo.leaeninfNotification"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Group-BLRd3Svh.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "dev.expo.leaeninfNotification",
+      "googleServicesFile": "./google-services.json",
+      "buildType": "apk"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "902ee925-c745-4e45-8037-6b15ca5b655d"
+      }
+    },
+    "owner": "jobayerrahmanohee"
+  }
+}
